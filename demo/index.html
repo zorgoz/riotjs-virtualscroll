@@ -1,0 +1,83 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>RiotJs virtual scroll compo nent demo</title>
+  <meta name="description" content="RiotJs virtual scroll compo nent demo">
+  <meta name="author" content="zorgoz">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/riot/3.13.1/riot.min.js" integrity="sha256-RkNPY48KDptDlBzNqQZAVDNI/I+OzuxRKpXHUaBCeEw=" crossorigin="anonymous"></script>
+  <script src="../dist/virtual-scroll.js"></script>
+  
+  <style>
+	virtual-scroll {
+		height: 500px;
+		border: 1px solid red;
+		padding: 10px;
+	}
+	
+	virtual-scroll > div {
+		border: 1px solid blue;
+		padding: 10px;
+		margin: 10px;
+	}
+	
+	@media (max-width: 959px) { /*>=M*/
+		virtual-scroll > div {
+			padding: 20px;
+			border: 1px solid green;
+		}
+	}
+  </style>
+</head>
+
+<body>
+	<virtual-scroll id="first" item="row" key="i" itemClass="myitem">
+		Item #{index}: with key={i}, value={row.value}
+	</virtual-scroll>
+
+	<div>
+		<button onclick="re(500);">Get 500 items</button>
+		<button onclick="re(10);">Get 10 items</button>
+		<button onclick="re(10000);">Get 10000 items</button>
+	</div>
+	
+	<div>
+		<button onclick="loc();">Jump to #</button><input type="number" min="0">
+	</div>
+
+  <script>
+	var vs = null;
+	build = (keys) => keys.reduce((a,c) => { a[`x_${c}`]={idx:c, value:c*100}; return a; }, {}); 
+	
+	function re(n){
+		let items = build([...Array(n).keys()]);
+		vs.update({items:items});
+	}
+	
+	function max(){
+		let l = Object.keys(vs.items).length;
+		document.querySelector('input').max = l-1;
+		document.querySelector('input').value = Math.floor(Math.random()*l);
+	}
+	
+	function loc(){
+		let l = document.querySelector('input').value;
+		vs.locate(l, {block: 'center'})
+				.then(element => {
+					let original_color = element.style.backgroundColor;
+					element.style.backgroundColor = 'orange';
+					window.setTimeout(() => element.style.backgroundColor = original_color, 1000)
+				})
+				.catch(() => alert('Out of range!'));
+	}
+	
+	vs = riot.mount('#first', {items:build([...Array(5).keys()])})[0];
+	max();
+	vs.on('updated', max);
+	
+</script>
+</body>
+</html>
