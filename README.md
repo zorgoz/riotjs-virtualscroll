@@ -19,7 +19,9 @@ All attributes are optional. The root parameter of the component is `items` that
     </div>
 
 Both the component and the inner blocks have some default styles to allow proper positioning.
-**Note:** the element node will have a `tag` property set that references the riotjs tag it represents.
+**Notes:** 
+  - the element node will have a `tag` property set that references the riotjs tag it represents.
+  - the inner tag will get as `parent` property of its options the outer tag (if any) and not the component itself; thus you can simply refere to the component's tag context from within its content. 
 
 ## Internals
 Only at most the triple of the visible content elements is in the DOM at any time to allow smooth scrolling. Mounting and unmounting tags is expensive. To allow good performance, the inner tag instances are reused instead of being unmounted and recreated. The component is using an off-DOM pool that holds a set of elements that are fully prepared to be put back into the component when needed. When scrolling around you will notice that the order of the elements inside the component will become chaotic but positined as required.
