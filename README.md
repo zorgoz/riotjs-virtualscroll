@@ -38,6 +38,6 @@ As you probably figured it out already, it returns a promise (an awaitable) as s
 
 The _index_ parameter is the zero-based index of the item to scroll to within the _items_ collection. If you need to locate an element by property, you will have to calculate the index yourself before calling this method.
 
-_Options_ are optional, and properties timilat ro that of `element.scroll()` and `element.scrollIntoView()`: `{block:'start|center|end', behavior:'smooth|instant|auto'}`. Defaults are _center_ and _auto_ respectively. The _bahavior_ is actually passed to the DOM method, thus the speed, easing and other physical factors are browser dependent.  
+_Options_ are optional, and properties similat to that of `element.scroll()` and `element.scrollIntoView()`: `{block:'start|center|end', behavior:'smooth|instant|auto'}`. Defaults are _center_ and _auto_ respectively. The _bahavior_ is actually passed to the DOM method, thus the speed, easing and other physical factors are browser dependent.  
 
 _Note_: the demo relies on RiotJS 3.13.1.
