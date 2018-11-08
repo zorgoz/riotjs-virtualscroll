@@ -18,7 +18,8 @@ All attributes are optional. The root parameter of the component is `items` that
       Item #4186: with key=x_4186, value=418600
     </div>
 
-Both the component and the inner block have some default styles to allow proper positioning.
+Both the component and the inner blocks have some default styles to allow proper positioning.
+**Note:** the element node will have a `tag` property set that references the riotjs tag it represents.
 
 ## Internals
 Only at most the triple of the visible content elements is in the DOM at any time to allow smooth scrolling. Mounting and unmounting tags is expensive. To allow good performance, the inner tag instances are reused instead of being unmounted and recreated. The component is using an off-DOM pool that holds a set of elements that are fully prepared to be put back into the component when needed. When scrolling around you will notice that the order of the elements inside the component will become chaotic but positined as required.
@@ -26,6 +27,15 @@ Only at most the triple of the visible content elements is in the DOM at any tim
 The component is taking into account the margins and borders applied to the inner element and the padding applied to the component itself. It recalculates its bounds when updated and when resized. It does _not_ support variable height content. The height is calculated from the element with index `0`, but if you think this method would not be conclusive in any special case, better set fixed height using either the content of `itemClass` or the `virtual-scroll > div` selector.
 
 ## Locating elements
-_t.b.c_
+You might need to scroll an element into view. As there are few actual inner elements in the DOM at a time, the legacy methods won't work. This is why I have implemented a method for this purpose. The syntax is:
+
+    let vs = ... // the virtual scroll tag object
+    vs.locate(index, options).then(function(element) {...})
+    
+As you probably figured it out already, it returns a promise (an awaitable) as scrolling to a specific item might take a while. At the moment the element is in the DOM, it will resolve immediately. This means that you might get the element before it reaches its final position.
+
+The _index_ parameter is the zero-based index of the item to scroll to within the _items_ collection. If you need to locate an element by property, you will have to calculate the index yourself before calling this method.
+
+_Options_ are optional, and properties timilat ro that of `element.scroll()` and `element.scrollIntoView()`: `{block:'start|center|end', behavior:'smooth|instant|auto'}`. Defaults are _center_ and _auto_ respectively. The _bahavior_ is actually passed to the DOM method, thus the speed, easing and other physical factors are browser dependent.  
 
 _Note_: the demo relies on RiotJS 3.13.1.
