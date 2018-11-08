@@ -110,7 +110,7 @@
 				
 				opts = opts || {}
 				opts.block = ['start','center','end'].includes(opts.block) ? opts.block : 'center';
-				opts.behavior = ['smooth','instant','auto'].includes(opts.block) ? opts.block : 'auto';				
+				opts.behavior = ['smooth','instant','auto'].includes(opts.behavior) ? opts.behavior : 'auto';				
 				
 				let sc = the * this.itemHeight + this.rootPadding.top;
 				switch(opts.block) {
@@ -128,10 +128,14 @@
 				if(element) {
 					resolve(element);					
 				} else {
-					this.one('scrolled', () => {
+					let react = function() {
+						if(!this.nodeBuffer[the]) return;
 						element = this.root.querySelector(sel);
 						resolve(element);
-					})
+						this.off('scrolled', react);
+					}
+				
+					this.on('scrolled', react);
 				}
 
 				this.root.scroll(Object.assign(opts, {top:sc}));

@@ -65,13 +65,13 @@
 	
 	function loc(){
 		let l = document.querySelector('input').value;
-		vs.locate(l, {block: 'center'})
+		vs.locate(l, {block: 'center', behavior: 'smooth'})
 				.then(element => {
 					let original_color = element.style.backgroundColor;
 					element.style.backgroundColor = 'orange';
 					window.setTimeout(() => element.style.backgroundColor = original_color, 1000)
 				})
-				.catch(() => alert('Out of range!'));
+				.catch(e => alert('Out of range!'));
 	}
 	
 	vs = riot.mount('#first', {items:build([...Array(5).keys()])})[0];
