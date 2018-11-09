@@ -40,4 +40,6 @@ The _index_ parameter is the zero-based index of the item to scroll to within th
 
 _Options_ are optional, and properties similat to that of `element.scroll()` and `element.scrollIntoView()`: `{block:'start|center|end', behavior:'smooth|instant|auto'}`. Defaults are _center_ and _auto_ respectively. The _bahavior_ is actually passed to the DOM method, thus the speed, easing and other physical factors are browser dependent.  
 
+**Live demo: https://jsbin.com/mamafep/edit?output**
+
 _Note_: the demo relies on RiotJS 3.13.1.
